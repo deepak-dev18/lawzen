@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreeAI.dir — Directory of Free AI Tools</title>
+<meta name="description" content="Domain-wise directory of free AI tools where you can generate and download content at no cost.">
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#10161f; --panel2:#141c27; --line:#1f2a38;
+    --text:#d6e2f0; --muted:#7d8ea3; --accent:#39e6a0; --accent2:#4cc2ff; --warn:#ffb454;
+    --mono:ui-monospace,"JetBrains Mono","Fira Code",Consolas,Menlo,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;min-height:100vh;
+    background-image:
+      linear-gradient(rgba(57,230,160,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(57,230,160,.035) 1px,transparent 1px);
+    background-size:36px 36px;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  /* top bar */
+  .topbar{border-bottom:1px solid var(--line);background:rgba(10,14,20,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:54px;font-family:var(--mono);font-size:13px}
+  .logo{color:var(--accent);font-weight:700;letter-spacing:.5px}
+  .logo span{color:var(--muted);font-weight:400}
+  .status{color:var(--muted);display:flex;align-items:center;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+
+  /* hero */
+  .hero{padding:56px 0 28px}
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-family:var(--mono);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .term-head{display:flex;gap:7px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
+  .term-head i{width:11px;height:11px;border-radius:50%;display:block}
+  .term-head i:nth-child(1){background:#ff5f56}.term-head i:nth-child(2){background:#ffbd2e}.term-head i:nth-child(3){background:#27c93f}
+  .term-head b{margin-left:10px;font-size:12px;color:var(--muted);font-weight:400}
+  .term-body{padding:22px 22px 24px}
+  .term-body .cmd{color:var(--muted);font-size:13px}
+  .term-body .cmd em{color:var(--accent);font-style:normal}
+  h1{font-size:clamp(26px,4.4vw,44px);line-height:1.15;margin:12px 0 10px;letter-spacing:-.5px}
+  h1 .g{color:var(--accent)}
+  .lead{color:var(--muted);max-width:720px;font-family:var(--sans);font-size:15.5px}
+  .caret{display:inline-block;width:10px;height:1.05em;background:var(--accent);vertical-align:-3px;margin-left:3px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  .rules{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .rule{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;color:var(--muted);background:var(--bg)}
+  .rule b{color:var(--accent)}
+
+  /* controls */
+  .controls{padding:10px 0 6px;position:sticky;top:54px;z-index:15;background:linear-gradient(var(--bg) 78%,transparent)}
+  .search{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:0 14px;font-family:var(--mono)}
+  .search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(57,230,160,.12)}
+  .search span{color:var(--accent)}
+  .search input{flex:1;background:none;border:0;outline:0;color:var(--text);font:inherit;font-size:14px;padding:13px 0}
+  .search kbd{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .chip{flex:none;font-family:var(--mono);font-size:12.5px;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;transition:.15s}
+  .chip:hover{color:var(--text);border-color:var(--muted)}
+  .chip.on{color:#04120c;background:var(--accent);border-color:var(--accent);font-weight:700}
+  .chip small{opacity:.7;margin-left:4px}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--muted);padding:6px 2px 0}
+  .meta b{color:var(--accent2)}
+
+  /* sections */
+  section.cat{padding:26px 0 6px}
+  .cat-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:1px dashed var(--line);padding-bottom:10px}
+  .cat-head h2{font-size:19px;font-family:var(--mono);font-weight:600}
+  .cat-head h2::before{content:"// ";color:var(--accent)}
+  .cat-head p{color:var(--muted);font-size:13.5px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+
+  /* cards */
+  .card{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:transform .15s,border-color .15s,box-shadow .15s}
+  .card::after{content:"↗";position:absolute;top:12px;right:14px;font-family:var(--mono);color:var(--muted);transition:.15s}
+  .card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 28px rgba(57,230,160,.1);outline:0}
+  .card:hover::after{color:var(--accent);transform:translate(2px,-2px)}
+  .row{display:flex;align-items:center;gap:12px}
+  .ico{width:44px;height:44px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;flex:none;overflow:hidden}
+  .ico img{width:26px;height:26px;border-radius:5px}
+  .ico .fb{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:18px}
+  .name{font-weight:650;font-size:16px}
+  .host{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .desc{font-size:13.5px;color:#a9b8cb;flex:1}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+  .tag.dl{color:var(--accent);border-color:rgba(57,230,160,.35)}
+  .tag.lim{color:var(--warn);border-color:rgba(255,180,84,.35)}
+
+  .empty{display:none;text-align:center;font-family:var(--mono);color:var(--muted);padding:60px 0}
+  .empty b{color:var(--warn)}
+
+  footer{margin-top:50px;border-top:1px solid var(--line);padding:26px 0 40px;font-size:13px;color:var(--muted)}
+  footer .box{border:1px solid rgba(255,180,84,.3);background:rgba(255,180,84,.05);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+  footer .box b{color:var(--warn)}
+  footer code{font-family:var(--mono);color:var(--accent2)}
+  @media(max-width:600px){.hero{padding-top:34px}.cat-head{flex-direction:column;gap:2px}.search kbd{display:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#top">FreeAI<span>.dir</span> ~/</a>
+    <div class="status"><i class="dot"></i><span id="count-top">loading…</span></div>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <div class="term">
+      <div class="term-head"><i></i><i></i><i></i><b>bash — freeai.dir</b></div>
+      <div class="term-body">
+        <div class="cmd"><em>$</em> ls ./free-ai-tools --by-domain<span class="caret"></span></div>
+        <h1>Free AI tools, <span class="g">sorted by domain.</span></h1>
+        <p class="lead">Text, images, slides, video, audio, code, research and legal help. Every tool here lets you generate and download output on a free tier. Click any card to go straight to the tool.</p>
+        <div class="rules">
+          <span class="rule"><b>✔</b> free tier</span>
+          <span class="rule"><b>✔</b> generate</span>
+          <span class="rule"><b>✔</b> download / export</span>
+          <span class="rule"><b>✔</b> direct links</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <label class="search">
+      <span>&gt;</span>
+      <input id="q" type="search" placeholder="search tools, e.g. “slides”, “logo”, “contract”…" autocomplete="off" aria-label="Search tools">
+      <kbd>/</kbd>
+    </label>
+    <div class="chips" id="chips" role="tablist" aria-label="Filter by domain"></div>
+    <div class="meta" id="meta"></div>
+  </div>
+
+  <div id="out"></div>
+  <div class="empty" id="empty">$ grep: <b>no tools matched</b> your query. Try another keyword.</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="box"><b>Heads up:</b> free tiers change often. Daily limits, watermarks, sign-in requirements and export options can differ per tool and over time, so check each site's current plan. For legal topics, AI output is general information, not professional legal advice.</div>
+    <div>Edit the <code>TOOLS</code> array in this file to add, remove or update entries. Icons load from each site's favicon with a letter fallback.</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- DATA: edit here ---------- */
+const CATEGORIES = [
+  {id:"text",   label:"Text Generation",   emoji:"✍️", blurb:"Chat, writing, brainstorming and Q&A"},
+  {id:"image",  label:"Image Generation",  emoji:"🎨", blurb:"Text-to-image, art and design"},
+  {id:"ppt",    label:"Presentations",     emoji:"📊", blurb:"Slide decks from a prompt, exportable"},
+  {id:"video",  label:"Video Generation",  emoji:"🎬", blurb:"Text/image-to-video clips"},
+  {id:"audio",  label:"Audio & Music",     emoji:"🎵", blurb:"Music, voice-over and text-to-speech"},
+  {id:"code",   label:"Code & Dev",        emoji:"💻", blurb:"Coding assistants and dev playgrounds"},
+  {id:"docs",   label:"Research & Docs",   emoji:"📚", blurb:"Summarise, cite and analyse documents"},
+  {id:"edit",   label:"Image Editing",     emoji:"🪄", blurb:"Background removal, enhancement, cleanup"},
+  {id:"legal",  label:"Legal Help",        emoji:"⚖️", blurb:"Ask legal questions, draft documents, search case law"}
+];
+
+// t = tags shown on card. dl = what you can download/export. lim = known limit to check.
+const TOOLS = [
+  // TEXT
+  {c:"text",n:"ChatGPT",u:"https://chatgpt.com",d:"General-purpose assistant for writing, analysis and Q&A. Copy or export responses.",dl:"Copy / export text",lim:"Usage caps on free plan"},
+  {c:"text",n:"Claude",u:"https://claude.ai",d:"Thoughtful writing, long-document analysis and coding help. Download created files.",dl:"Copy / download files",lim:"Message caps"},
+  {c:"text",n:"Google Gemini",u:"https://gemini.google.com",d:"Google's assistant with Docs and Gmail export options.",dl:"Export to Docs",lim:"Feature limits on free"},
+  {c:"text",n:"Microsoft Copilot",u:"https://copilot.microsoft.com",d:"Free assistant with web search, writing and image generation built in.",dl:"Copy / export",lim:"Daily limits"},
+  {c:"text",n:"DeepSeek",u:"https://chat.deepseek.com",d:"Strong reasoning and coding chat model, free to use on the web.",dl:"Copy text",lim:"Server load"},
+  {c:"text",n:"Mistral Le Chat",u:"https://chat.mistral.ai",d:"Fast European assistant with free tier for chat and document work.",dl:"Copy text",lim:"Fair-use caps"},
+  {c:"text",n:"Perplexity",u:"https://www.perplexity.ai",d:"Answer engine with cited sources, good for research-style questions.",dl:"Copy / export answers",lim:"Pro searches limited"},
+
+  // IMAGE
+  {c:"image",n:"Bing Image Creator",u:"https://www.bing.com/images/create",d:"Free text-to-image from Microsoft, powered by OpenAI models.",dl:"Download PNG/JPG",lim:"Boosts are limited"},
+  {c:"image",n:"Leonardo AI",u:"https://leonardo.ai",d:"Game-art and concept-art generation with many style models.",dl:"Download images",lim:"Daily token credits"},
+  {c:"image",n:"Ideogram",u:"https://ideogram.ai",d:"Text-to-image with unusually good in-image typography.",dl:"Download images",lim:"Daily credits"},
+  {c:"image",n:"Adobe Firefly",u:"https://firefly.adobe.com",d:"Commercially-safe generative images and text effects.",dl:"Download images",lim:"Monthly credits"},
+  {c:"image",n:"Craiyon",u:"https://www.craiyon.com",d:"Simple free image generator, no account required for basic use.",dl:"Download images",lim:"Ads / slower queue"},
+  {c:"image",n:"Playground",u:"https://playground.com",d:"Image creation and canvas-style editing with a free daily allowance.",dl:"Download images",lim:"Daily quota"},
+  {c:"image",n:"Canva Magic Media",u:"https://www.canva.com/ai-image-generator/",d:"Generate images and drop them straight into designs.",dl:"PNG / JPG / PDF",lim:"Free-tier usage cap"},
+
+  // PPT
+  {c:"ppt",n:"Gamma",u:"https://gamma.app",d:"Generate decks, docs and web pages from a prompt or outline.",dl:"Export PDF / PPTX",lim:"Credit-based, branding"},
+  {c:"ppt",n:"Canva Presentations",u:"https://www.canva.com/presentations/",d:"Huge template library with AI-assisted slide creation.",dl:"PPTX / PDF / images",lim:"Some assets are Pro"},
+  {c:"ppt",n:"Slidesgo AI",u:"https://slidesgo.com/ai-presentation-maker",d:"Describe a topic and get an editable deck in Google Slides or PowerPoint style.",dl:"PPTX / Google Slides",lim:"Monthly download cap"},
+  {c:"ppt",n:"Beautiful.ai",u:"https://www.beautiful.ai",d:"Smart-layout slide builder that keeps designs tidy as you edit.",dl:"Export (check plan)",lim:"Free trial / limits"},
+
+  // VIDEO
+  {c:"video",n:"Pika",u:"https://pika.art",d:"Text-to-video and image-to-video with creative effects.",dl:"Download MP4",lim:"Credits, watermark"},
+  {c:"video",n:"Luma Dream Machine",u:"https://lumalabs.ai/dream-machine",d:"Cinematic video generation from text or an image.",dl:"Download MP4",lim:"Monthly generations"},
+  {c:"video",n:"Kling AI",u:"https://klingai.com",d:"High-quality text and image to video, with daily free credits.",dl:"Download MP4",lim:"Daily credits"},
+  {c:"video",n:"Hailuo AI",u:"https://hailuoai.video",d:"Fast video generation with a free daily allowance.",dl:"Download MP4",lim:"Queue / credits"},
+
+  // AUDIO
+  {c:"audio",n:"Suno",u:"https://suno.com",d:"Generate full songs with vocals from a text prompt.",dl:"Download MP3",lim:"Daily credits, non-commercial"},
+  {c:"audio",n:"Udio",u:"https://www.udio.com",d:"Music generation with fine-grained style control.",dl:"Download audio",lim:"Credit limits"},
+  {c:"audio",n:"ElevenLabs",u:"https://elevenlabs.io",d:"Realistic text-to-speech and voice generation.",dl:"Download MP3",lim:"Monthly characters"},
+  {c:"audio",n:"NaturalReader",u:"https://www.naturalreaders.com",d:"Text-to-speech for documents and web text.",dl:"Download (check plan)",lim:"Premium voices limited"},
+
+  // CODE
+  {c:"code",n:"GitHub Copilot",u:"https://github.com/features/copilot",d:"In-editor completions and chat, with a free tier for individuals.",dl:"Code in your repo",lim:"Monthly request caps"},
+  {c:"code",n:"Windsurf",u:"https://windsurf.com",d:"AI-native editor with a free plan for agentic coding.",dl:"Code in your project",lim:"Credit-based"},
+  {c:"code",n:"Google AI Studio",u:"https://aistudio.google.com",d:"Prototype with Gemini models and export working code.",dl:"Export code",lim:"Rate limits"},
+  {c:"code",n:"Hugging Face Spaces",u:"https://huggingface.co/spaces",d:"Thousands of free community AI demos and open models.",dl:"Varies by Space",lim:"Shared compute"},
+  {c:"code",n:"Replit",u:"https://replit.com",d:"Browser IDE with AI help for building and running apps.",dl:"Download project ZIP",lim:"Agent usage limited"},
+  {c:"code",n:"Blackbox AI",u:"https://www.blackbox.ai",d:"Coding assistant and chat with a free usage tier.",dl:"Copy code",lim:"Daily limits"},
+
+  // DOCS / RESEARCH
+  {c:"docs",n:"NotebookLM",u:"https://notebooklm.google.com",d:"Upload sources and get grounded summaries, Q&A and audio overviews.",dl:"Notes / audio overview",lim:"Source caps"},
+  {c:"docs",n:"Elicit",u:"https://elicit.com",d:"Find and summarise academic papers.",dl:"Export CSV / BibTeX",lim:"Free tier limits"},
+  {c:"docs",n:"QuillBot",u:"https://quillbot.com",d:"Paraphrase, summarise and grammar-check text.",dl:"Copy / export",lim:"Word limits on free"},
+  {c:"docs",n:"Consensus",u:"https://consensus.app",d:"Search peer-reviewed research and get evidence summaries.",dl:"Copy citations",lim:"Pro features gated"},
+
+  // IMAGE EDIT
+  {c:"edit",n:"remove.bg",u:"https://www.remove.bg",d:"One-click background removal for photos.",dl:"Download PNG",lim:"Free = low-res"},
+  {c:"edit",n:"Photoroom",u:"https://www.photoroom.com",d:"Background removal and product-photo cleanup.",dl:"Download image",lim:"Watermark on free"},
+  {c:"edit",n:"Upscayl",u:"https://upscayl.org",d:"Open-source AI image upscaler that runs on your own machine.",dl:"Save upscaled files",lim:"Needs a decent GPU"},
+  {c:"edit",n:"Canva Magic Studio",u:"https://www.canva.com/magic/",d:"Magic Eraser, Expand and other AI edits inside Canva.",dl:"PNG / JPG / PDF",lim:"Some tools are Pro"},
+
+  // LEGAL
+  {c:"legal",n:"ChatGPT for Legal Q&A",u:"https://chatgpt.com",d:"Ask general legal questions, get plain-language explanations and draft letters or notices.",dl:"Copy / export drafts",lim:"General info only"},
+  {c:"legal",n:"Claude for Legal Drafting",u:"https://claude.ai",d:"Summarise contracts, explain clauses and draft documents from your facts.",dl:"Copy / download drafts",lim:"General info only"},
+  {c:"legal",n:"Gemini for Legal Q&A",u:"https://gemini.google.com",d:"Explain legal concepts and draft agreements, exportable to Google Docs.",dl:"Export to Docs",lim:"General info only"},
+  {c:"legal",n:"Indian Kanoon",u:"https://indiankanoon.org",d:"Free search engine for Indian case law, statutes and judgments.",dl:"Read / save pages",lim:"Search, not AI chat"},
+  {c:"legal",n:"CourtListener",u:"https://www.courtlistener.com",d:"Free US court opinions and dockets from the Free Law Project.",dl:"Read / save opinions",lim:"Search, not AI chat"}
+];
+/* ---------- /DATA ---------- */
+
+const $ = s => document.querySelector(s);
+const out = $("#out"), chips = $("#chips"), meta = $("#meta"), empty = $("#empty"), q = $("#q");
+let active = "all";
+
+const host = u => new URL(u).hostname.replace(/^www\./,"");
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function card(t){
+  const h = host(t.u);
+  return `<a class="card" href="${t.u}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(t.n)}">
+    <div class="row">
+      <div class="ico"><img src="https://www.google.com/s2/favicons?domain=${h}&sz=64" alt="" loading="lazy"
+        onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fb',textContent:'${esc(t.n)[0]}'}))"></div>
+      <div><div class="name">${esc(t.n)}</div><div class="host">${h}</div></div>
+    </div>
+    <p class="desc">${esc(t.d)}</p>
+    <div class="tags"><span class="tag dl">⬇ ${esc(t.dl)}</span><span class="tag lim">⚠ ${esc(t.lim)}</span></div>
+  </a>`;
+}
+
+function render(){
+  const term = q.value.trim().toLowerCase();
+  let shown = 0, html = "";
+  CATEGORIES.forEach(cat=>{
+    if(active!=="all" && active!==cat.id) return;
+    const items = TOOLS.filter(t => t.c===cat.id &&
+      (!term || (t.n+" "+t.d+" "+t.dl+" "+cat.label+" "+host(t.u)).toLowerCase().includes(term)));
+    if(!items.length) return;
+    shown += items.length;
+    html += `<section class="cat" id="${cat.id}">
+      <div class="cat-head"><h2>${cat.emoji} ${cat.label}</h2><p>${cat.blurb}</p></div>
+      <div class="grid">${items.map(card).join("")}</div></section>`;
+  });
+  out.innerHTML = html;
+  empty.style.display = shown ? "none" : "block";
+  meta.innerHTML = `$ showing <b>${shown}</b> of ${TOOLS.length} tools` + (term?` matching “${esc(term)}”`:"");
+}
+
+function buildChips(){
+  const mk = (id,label,n) => `<button class="chip ${id===active?"on":""}" data-id="${id}" role="tab">${label}<small>${n}</small></button>`;
+  chips.innerHTML = mk("all","All",TOOLS.length) +
+    CATEGORIES.map(c=>mk(c.id,`${c.emoji} ${c.label}`,TOOLS.filter(t=>t.c===c.id).length)).join("");
+}
+
+chips.addEventListener("click",e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  active = b.dataset.id; history.replaceState(null,"", active==="all"?"#top":"#"+active);
+  buildChips(); render();
+});
+q.addEventListener("input",render);
+addEventListener("keydown",e=>{
+  if(e.key==="/" && document.activeElement!==q){e.preventDefault();q.focus();}
+  if(e.key==="Escape"){q.value="";q.blur();render();}
+});
+
+const h = location.hash.slice(1);
+if(CATEGORIES.some(c=>c.id===h)) active = h;
+$("#count-top").textContent = `${TOOLS.length} tools · ${CATEGORIES.length} domains`;
+buildChips(); render();
+</script>
+</body>
+</html>
